@@ -196,24 +196,18 @@ const NodeIcon = () => (
 export default function LandingPage() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { signIn, signUp, session } = useAuth();
+  const { signIn, session } = useAuth();
 
   // Redirect if already authenticated
   useEffect(() => {
     if (session) navigate('/dashboard', { replace: true });
   }, [session, navigate]);
 
-  const [tab, setTab] = useState<'login' | 'signup'>('login');
+  const [tab] = useState<'login'>('login');
 
   // Login state
   const [loginEmail, setLoginEmail]       = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-
-  // Signup state
-  const [signupName,     setSignupName]     = useState('');
-  const [signupDeviceId, setSignupDeviceId] = useState('');
-  const [signupEmail,    setSignupEmail]    = useState('');
-  const [signupPassword, setSignupPassword] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [focused,   setFocused]   = useState<string | null>(null);
@@ -240,32 +234,17 @@ export default function LandingPage() {
     navigate('/dashboard');
   }, [loginEmail, loginPassword, signIn, navigate, showToast]);
 
-  const handleSignup = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!signupEmail.trim() || !signupPassword.trim() || !signupName.trim() || !signupDeviceId.trim()) {
-      showToast('All fields are required', 'error');
-      return;
-    }
-    setIsLoading(true);
-    const { error } = await signUp(signupEmail.trim(), signupPassword, signupName.trim(), signupDeviceId.trim());
-    setIsLoading(false);
-    if (error) { showToast(error, 'error'); return; }
-    showToast('Account created. You can now sign in.', 'success');
-    setTab('login');
-    setLoginEmail(signupEmail.trim());
-  }, [signupEmail, signupPassword, signupName, signupDeviceId, signUp, showToast]);
-
   return (
     <div className="lp-root">
       <div className="lp-bg-base" />
       <div className="lp-pillar-wrap">
         <LightPillar
-          topColor="#0090ff" bottomColor="#001a33"
-          intensity={1.15} rotationSpeed={0.22}
-          glowAmount={0.006} pillarWidth={2.6}
+          topColor="#0090ff" bottomColor="#e0f0ff"
+          intensity={0.6} rotationSpeed={0.22}
+          glowAmount={0.003} pillarWidth={2.6}
           pillarHeight={0.38} noiseIntensity={0.35}
           pillarRotation={0} interactive={false}
-          mixBlendMode="screen" quality="high"
+          mixBlendMode="multiply" quality="high"
         />
       </div>
       <div className="lp-vignette" />
@@ -335,56 +314,28 @@ export default function LandingPage() {
                 </svg>
               </div>
               <div>
-                <p className="lp-card-title">{tab === 'login' ? 'Initialize Session' : 'Register Account'}</p>
-                <p className="lp-card-desc">{tab === 'login' ? 'Authenticate with your credentials' : 'Create your admin account'}</p>
+                <p className="lp-card-title">Initialize Session</p>
+                <p className="lp-card-desc">Authenticate with your credentials</p>
               </div>
             </div>
 
             <div className="lp-card-divider" />
 
-            {/* Tabs */}
-            <div className="lp-tabs">
-              <button type="button" className={`lp-tab ${tab === 'login'  ? 'lp-tab--active' : ''}`} onClick={() => setTab('login')}>Sign In</button>
-              <button type="button" className={`lp-tab ${tab === 'signup' ? 'lp-tab--active' : ''}`} onClick={() => setTab('signup')}>Sign Up</button>
-            </div>
-
             {/* Login form */}
-            {tab === 'login' && (
-              <form onSubmit={handleLogin} noValidate className="lp-form">
-                <Field id="loginEmail"    label="Email"    type="email"    value={loginEmail}    onChange={setLoginEmail}    placeholder="admin@cyberfence.com" focused={focused} onFocus={() => setFocused('loginEmail')}    onBlur={() => setFocused(null)} autoComplete="email"            icon={<EmailIcon />} />
-                <Field id="loginPassword" label="Password" type="password" value={loginPassword} onChange={setLoginPassword} placeholder="Your password"         focused={focused} onFocus={() => setFocused('loginPassword')} onBlur={() => setFocused(null)} autoComplete="current-password" icon={<LockIcon />} />
-                <button type="submit" disabled={isLoading} className="lp-btn">
-                  {isLoading ? (
-                    <span className="lp-btn-loading"><span className="lp-spinner" />Authenticating...</span>
-                  ) : (
-                    <span className="lp-btn-content">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" /></svg>
-                      Access Command Center
-                    </span>
-                  )}
-                </button>
-              </form>
-            )}
-
-            {/* Signup form */}
-            {tab === 'signup' && (
-              <form onSubmit={handleSignup} noValidate className="lp-form">
-                <Field id="signupName"     label="Full Name"  type="text"     value={signupName}     onChange={setSignupName}     placeholder="Admin"                focused={focused} onFocus={() => setFocused('signupName')}     onBlur={() => setFocused(null)} autoComplete="name"         icon={<UserIcon />} />
-                <Field id="signupDeviceId" label="Device ID"  type="text"     value={signupDeviceId} onChange={setSignupDeviceId} placeholder="CF-DEV-001000"        focused={focused} onFocus={() => setFocused('signupDeviceId')} onBlur={() => setFocused(null)} autoComplete="off"          icon={<NodeIcon />} />
-                <Field id="signupEmail"    label="Email"      type="email"    value={signupEmail}    onChange={setSignupEmail}    placeholder="admin@cyberfence.com" focused={focused} onFocus={() => setFocused('signupEmail')}    onBlur={() => setFocused(null)} autoComplete="email"        icon={<EmailIcon />} />
-                <Field id="signupPassword" label="Password"   type="password" value={signupPassword} onChange={setSignupPassword} placeholder="Min. 6 characters"    focused={focused} onFocus={() => setFocused('signupPassword')} onBlur={() => setFocused(null)} autoComplete="new-password" icon={<LockIcon />} />
-                <button type="submit" disabled={isLoading} className="lp-btn">
-                  {isLoading ? (
-                    <span className="lp-btn-loading"><span className="lp-spinner" />Creating account...</span>
-                  ) : (
-                    <span className="lp-btn-content">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="23" y1="11" x2="17" y2="11" /></svg>
-                      Create Account
-                    </span>
-                  )}
-                </button>
-              </form>
-            )}
+            <form onSubmit={handleLogin} noValidate className="lp-form">
+              <Field id="loginEmail"    label="Email"    type="email"    value={loginEmail}    onChange={setLoginEmail}    placeholder="admin@cyberfence.com" focused={focused} onFocus={() => setFocused('loginEmail')}    onBlur={() => setFocused(null)} autoComplete="email"            icon={<EmailIcon />} />
+              <Field id="loginPassword" label="Password" type="password" value={loginPassword} onChange={setLoginPassword} placeholder="Your password"         focused={focused} onFocus={() => setFocused('loginPassword')} onBlur={() => setFocused(null)} autoComplete="current-password" icon={<LockIcon />} />
+              <button type="submit" disabled={isLoading} className="lp-btn">
+                {isLoading ? (
+                  <span className="lp-btn-loading"><span className="lp-spinner" />Authenticating...</span>
+                ) : (
+                  <span className="lp-btn-content">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" /></svg>
+                    Access Command Center
+                  </span>
+                )}
+              </button>
+            </form>
 
             <p className="lp-card-footer">
               <span className="lp-card-footer-dot" />

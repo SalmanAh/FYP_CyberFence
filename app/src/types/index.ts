@@ -3,6 +3,7 @@ export interface NodeRecord {
   deviceId: string;
   walletAddress: string;
   validator: boolean;
+  validatorUrl?: string | null;  // Backend URL for validator nodes
   status: 'online' | 'offline' | 'syncing';
   lastSync: string;
   trustScore: number;

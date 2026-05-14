@@ -6,6 +6,7 @@ export interface NodeRow {
   device_id: string;
   wallet_address: string;
   is_validator: boolean;
+  validator_url?: string | null;
   status: 'online' | 'offline' | 'syncing';
   trust_score: number;
   registered_at: string;
@@ -17,6 +18,7 @@ interface UseNodesReturn {
   loading: boolean;
   error: string | null;
   toggleValidator: (id: string, current: boolean, deviceId: string) => Promise<void>;
+  updateValidatorUrl: (id: string, url: string) => Promise<void>;
   refresh: () => void;
 }
 
@@ -67,5 +69,24 @@ export function useNodes(): UseNodesReturn {
     }
   }, []);
 
-  return { nodes, loading, error, toggleValidator, refresh: load };
+  const updateValidatorUrl = useCallback(async (id: string, url: string) => {
+    // Optimistic update
+    const trimmedUrl = url.trim();
+    setNodes((prev) =>
+      prev.map((n) => n.id === id ? { ...n, validator_url: trimmedUrl || null } : n)
+    );
+
+    const { error: err } = await supabase
+      .from('nodes')
+      .update({ validator_url: trimmedUrl || null })
+      .eq('id', id);
+
+    if (err) {
+      // Revert on failure
+      await load();
+      throw new Error(err.message);
+    }
+  }, [load]);
+
+  return { nodes, loading, error, toggleValidator, updateValidatorUrl, refresh: load };
 }

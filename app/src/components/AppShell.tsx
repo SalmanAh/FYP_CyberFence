@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 function ShieldIcon({ active }: { active: boolean }) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-      stroke={active ? '#0090ff' : '#4a4a4a'} strokeWidth="2"
+      stroke={active ? '#0090ff' : '#999999'} strokeWidth="2"
       strokeLinecap="round" strokeLinejoin="round"
       style={active ? { filter: 'drop-shadow(0 0 4px #0090ff)' } : {}}>
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -18,7 +18,7 @@ function ShieldIcon({ active }: { active: boolean }) {
 function NetworkIcon({ active }: { active: boolean }) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-      stroke={active ? '#0090ff' : '#4a4a4a'} strokeWidth="2"
+      stroke={active ? '#0090ff' : '#999999'} strokeWidth="2"
       strokeLinecap="round" strokeLinejoin="round"
       style={active ? { filter: 'drop-shadow(0 0 4px #0090ff)' } : {}}>
       <circle cx="5" cy="6" r="3" />
@@ -33,7 +33,7 @@ function NetworkIcon({ active }: { active: boolean }) {
 function AlertIcon({ active }: { active: boolean }) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-      stroke={active ? '#0090ff' : '#4a4a4a'} strokeWidth="2"
+      stroke={active ? '#0090ff' : '#999999'} strokeWidth="2"
       strokeLinecap="round" strokeLinejoin="round"
       style={active ? { filter: 'drop-shadow(0 0 4px #0090ff)' } : {}}>
       <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
@@ -46,7 +46,7 @@ function AlertIcon({ active }: { active: boolean }) {
 function LogoutIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-      stroke="#4a4a4a" strokeWidth="2"
+      stroke="#999999" strokeWidth="2"
       strokeLinecap="round" strokeLinejoin="round">
       <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
       <polyline points="16 17 21 12 16 7" />
@@ -96,7 +96,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile, signOut } = useAuth();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -224,7 +224,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
               transition: 'opacity 0.2s ease, width 0.3s ease',
             }}
           >
-            <span className="as-nav-label" style={{ color: '#4a4a4a' }}>Logout</span>
+            <span className="as-nav-label" style={{ color: '#999999' }}>Logout</span>
           </span>
         </button>
       </aside>

@@ -30,7 +30,7 @@ function MetaCell({ label, value, mono = false, color }: {
       <span className="na-meta-label">{label}</span>
       <span className="na-meta-value" style={{
         fontFamily: mono ? 'Geist Mono, monospace' : undefined,
-        color: color ?? '#ffffff',
+        color: color ?? '#1a1a1a',
       }}>
         {value}
       </span>
@@ -176,9 +176,9 @@ function InspectorContent({
           { label: 'ECE', value: full.flow.ece_flag_count, color: '#9a9a9a' },
         ].map((f) => (
           <div key={f.label} className="na-flag-chip"
-            style={{ borderColor: f.value > 0 ? `${f.color}55` : 'rgba(255,255,255,0.06)' }}>
+            style={{ borderColor: f.value > 0 ? `${f.color}55` : 'rgba(0,0,0,0.08)' }}>
             <span className="na-flag-label">{f.label}</span>
-            <span className="na-flag-val" style={{ color: f.value > 0 ? f.color : '#3a3a3a' }}>
+            <span className="na-flag-val" style={{ color: f.value > 0 ? f.color : '#999999' }}>
               {f.value.toFixed(2)}
             </span>
           </div>
@@ -371,7 +371,7 @@ export default function NetworkAnomalies() {
                     <div className="na-feed-stats">
                       <span className="na-feed-stat">
                         <span className="na-feed-stat-label">CID</span>
-                        <span className="na-feed-stat-val" style={{ color: '#3a3a3a' }}>
+                        <span className="na-feed-stat-val" style={{ color: '#999999' }}>
                           {item.cid.slice(0, 10)}…
                         </span>
                       </span>
@@ -420,7 +420,7 @@ export default function NetworkAnomalies() {
               )
             ) : (
               <div className="na-inspector-empty">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a"
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cccccc"
                   strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />

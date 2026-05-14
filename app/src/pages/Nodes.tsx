@@ -6,8 +6,10 @@ type Filter = 'all' | 'validator' | 'online' | 'offline';
 
 export default function Nodes() {
   const { showToast } = useToast();
-  const { nodes, loading, error, toggleValidator, refresh } = useNodes();
+  const { nodes, loading, error, toggleValidator, updateValidatorUrl, refresh } = useNodes();
   const [filter, setFilter] = useState<Filter>('all');
+  const [editingUrlNodeId, setEditingUrlNodeId] = useState<string | null>(null);
+  const [urlInput, setUrlInput] = useState('');
 
   const filtered = nodes.filter((n) => {
     if (filter === 'validator') return n.is_validator;
@@ -37,6 +39,23 @@ export default function Nodes() {
         `${deviceId} ${!current ? 'promoted to' : 'removed from'} validator`,
         !current ? 'success' : 'info'
       );
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Update failed', 'error');
+    }
+  };
+
+  const handleEditUrl = (nodeId: string, currentUrl: string | null | undefined) => {
+    setEditingUrlNodeId(nodeId);
+    setUrlInput(currentUrl || '');
+  };
+
+  const handleSaveUrl = async () => {
+    if (!editingUrlNodeId) return;
+    try {
+      await updateValidatorUrl(editingUrlNodeId, urlInput);
+      showToast('Validator URL updated successfully', 'success');
+      setEditingUrlNodeId(null);
+      setUrlInput('');
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Update failed', 'error');
     }
@@ -89,8 +108,8 @@ export default function Nodes() {
             onClick={() => setFilter(f.key)}
             className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all ${
               filter === f.key
-                ? 'bg-white text-black'
-                : 'bg-[#0f0f0f] text-[#9a9a9a] hover:text-white border border-[rgba(255,255,255,0.08)]'
+                ? 'bg-[#1a1a1a] text-white'
+                : 'bg-white text-[#666666] hover:text-[#1a1a1a] border border-[rgba(0,0,0,0.1)]'
             }`}
             style={{ borderRadius: '2px' }}
           >
@@ -101,7 +120,7 @@ export default function Nodes() {
         {/* Refresh */}
         <button
           onClick={refresh}
-          className="ml-auto p-2 text-[#4a4a4a] hover:text-[#9a9a9a] transition-colors"
+          className="ml-auto p-2 text-[#999999] hover:text-[#666666] transition-colors"
           title="Refresh"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -114,20 +133,20 @@ export default function Nodes() {
 
       {/* Summary stats */}
       <div className="grid grid-cols-4 gap-6">
-        <div className="p-5" style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}>
-          <div className="text-xs font-bold uppercase text-[#9a9a9a] mb-2">Total Nodes</div>
-          <div className="font-display text-3xl text-white">{counts.all}</div>
+        <div className="p-5" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '2px' }}>
+          <div className="text-xs font-bold uppercase text-[#666666] mb-2">Total Nodes</div>
+          <div className="font-display text-3xl text-[#1a1a1a]">{counts.all}</div>
         </div>
-        <div className="p-5" style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}>
-          <div className="text-xs font-bold uppercase text-[#9a9a9a] mb-2">Validators</div>
+        <div className="p-5" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '2px' }}>
+          <div className="text-xs font-bold uppercase text-[#666666] mb-2">Validators</div>
           <div className="font-display text-3xl text-[#0090ff]">{counts.validator}</div>
         </div>
-        <div className="p-5" style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}>
-          <div className="text-xs font-bold uppercase text-[#9a9a9a] mb-2">Online</div>
-          <div className="font-display text-3xl text-[#00ff88]">{counts.online}</div>
+        <div className="p-5" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '2px' }}>
+          <div className="text-xs font-bold uppercase text-[#666666] mb-2">Online</div>
+          <div className="font-display text-3xl text-[#00aa55]">{counts.online}</div>
         </div>
-        <div className="p-5" style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}>
-          <div className="text-xs font-bold uppercase text-[#9a9a9a] mb-2">Offline</div>
+        <div className="p-5" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '2px' }}>
+          <div className="text-xs font-bold uppercase text-[#666666] mb-2">Offline</div>
           <div className="font-display text-3xl text-[#b8002b]">{counts.offline}</div>
         </div>
       </div>
@@ -135,31 +154,32 @@ export default function Nodes() {
       {/* Nodes table */}
       <div
         className="p-6"
-        style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}
+        style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '2px' }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#9a9a9a]">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#666666]">
             Registered Nodes
           </h3>
-          <span className="font-mono text-xs text-[#3a3a3a]">
+          <span className="font-mono text-xs text-[#999999]">
             {filtered.length} / {nodes.length} shown
           </span>
         </div>
 
         {filtered.length === 0 ? (
-          <p className="text-xs text-[#3a3a3a] py-8 text-center">No nodes match this filter</p>
+          <p className="text-xs text-[#999999] py-8 text-center">No nodes match this filter</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="text-left" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3 pr-4">Device ID</th>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3 pr-4">Wallet Address</th>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3 pr-4">Status</th>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3 pr-4">Validator</th>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3 pr-4">Trust Score</th>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3 pr-4">Last Sync</th>
-                  <th className="text-xs font-bold uppercase text-[#9a9a9a] pb-3">Actions</th>
+                <tr className="text-left" style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Device ID</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Wallet Address</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Status</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Validator</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Validator URL</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Trust Score</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3 pr-4">Last Sync</th>
+                  <th className="text-xs font-bold uppercase text-[#666666] pb-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -167,7 +187,7 @@ export default function Nodes() {
                   <tr
                     key={node.id}
                     className="transition-all duration-150 hover:translate-y-[-1px]"
-                    style={{ height: '64px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                    style={{ height: '64px', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
                   >
                     {/* Device ID */}
                     <td className="pr-4">
@@ -176,7 +196,7 @@ export default function Nodes() {
 
                     {/* Wallet */}
                     <td className="pr-4">
-                      <span className="font-mono text-xs text-[#9a9a9a]">
+                      <span className="font-mono text-xs text-[#666666]">
                         {node.wallet_address.slice(0, 10)}…{node.wallet_address.slice(-6)}
                       </span>
                     </td>
@@ -187,7 +207,7 @@ export default function Nodes() {
                         <span className="status-pill-active">Online</span>
                       ) : node.status === 'syncing' ? (
                         <span className="px-2 py-0.5 text-xs font-bold rounded-sm"
-                          style={{ background: 'rgba(255,170,68,0.1)', color: '#ffaa44', border: '1px solid rgba(255,170,68,0.3)' }}>
+                          style={{ background: 'rgba(255,170,68,0.15)', color: '#cc8800', border: '1px solid rgba(255,170,68,0.4)' }}>
                           Syncing
                         </span>
                       ) : (
@@ -199,14 +219,56 @@ export default function Nodes() {
                     <td className="pr-4">
                       {node.is_validator
                         ? <span className="status-pill-validator">Yes</span>
-                        : <span className="text-xs text-[#4a4a4a]">No</span>
+                        : <span className="text-xs text-[#999999]">No</span>
                       }
+                    </td>
+
+                    {/* Validator URL */}
+                    <td className="pr-4">
+                      {node.is_validator ? (
+                        <div className="flex items-center gap-2">
+                          {node.validator_url ? (
+                            <>
+                              <a 
+                                href={node.validator_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="font-mono text-xs text-[#0090ff] hover:underline"
+                                title={node.validator_url}
+                              >
+                                {node.validator_url.length > 20 
+                                  ? `${node.validator_url.slice(0, 20)}...` 
+                                  : node.validator_url}
+                              </a>
+                              <button
+                                onClick={() => handleEditUrl(node.id, node.validator_url)}
+                                className="text-[#666666] hover:text-[#0090ff] transition-colors"
+                                title="Edit URL"
+                              >
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => handleEditUrl(node.id, node.validator_url)}
+                              className="text-xs text-[#0090ff] hover:underline font-medium"
+                            >
+                              + Add URL
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-[#cccccc]">—</span>
+                      )}
                     </td>
 
                     {/* Trust score */}
                     <td className="pr-4">
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-20" style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '1px' }}>
+                        <div className="h-1.5 w-20" style={{ background: 'rgba(0,0,0,0.08)', borderRadius: '1px' }}>
                           <div
                             className="h-full transition-all"
                             style={{
@@ -216,13 +278,13 @@ export default function Nodes() {
                             }}
                           />
                         </div>
-                        <span className="text-xs text-[#9a9a9a] font-mono">{node.trust_score}%</span>
+                        <span className="text-xs text-[#666666] font-mono">{node.trust_score}%</span>
                       </div>
                     </td>
 
                     {/* Last sync */}
                     <td className="pr-4">
-                      <span className="text-xs text-[#9a9a9a]">
+                      <span className="text-xs text-[#666666]">
                         {new Date(node.last_sync).toLocaleDateString()}
                       </span>
                     </td>
@@ -234,7 +296,7 @@ export default function Nodes() {
                         className={`px-3 py-1.5 text-[10px] font-bold uppercase transition-all ${
                           node.is_validator
                             ? 'bg-transparent border border-[#b8002b] text-[#b8002b] hover:bg-[#b8002b] hover:text-white'
-                            : 'bg-white text-black hover:bg-[#0090ff] hover:text-white'
+                            : 'bg-[#1a1a1a] text-white hover:bg-[#0090ff] hover:text-white'
                         }`}
                         style={{ borderRadius: '2px' }}
                       >
@@ -248,6 +310,49 @@ export default function Nodes() {
           </div>
         )}
       </div>
+
+      {/* URL Edit Modal */}
+      {editingUrlNodeId && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={() => setEditingUrlNodeId(null)}
+        >
+          <div 
+            className="bg-white p-6 rounded-sm border border-[rgba(0,0,0,0.1)] max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-[#1a1a1a] mb-4">Edit Validator URL</h3>
+            <p className="text-sm text-[#666666] mb-4">
+              Enter the backend URL where this validator node can receive requests from the Python backend.
+            </p>
+            <input
+              type="url"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              placeholder="https://validator-node.example.com:8000"
+              className="w-full px-4 py-2 border border-[rgba(0,0,0,0.1)] rounded-sm text-sm font-mono focus:outline-none focus:border-[#0090ff] focus:ring-1 focus:ring-[#0090ff]"
+              autoFocus
+            />
+            <div className="flex gap-2 mt-4">
+              <button
+                onClick={handleSaveUrl}
+                className="flex-1 px-4 py-2 bg-[#0090ff] text-white text-sm font-bold uppercase rounded-sm hover:bg-[#0070cc] transition-colors"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => {
+                  setEditingUrlNodeId(null);
+                  setUrlInput('');
+                }}
+                className="flex-1 px-4 py-2 bg-[#f5f5f5] text-[#666666] text-sm font-bold uppercase rounded-sm hover:bg-[#e5e5e5] transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
