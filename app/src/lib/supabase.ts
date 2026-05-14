@@ -11,9 +11,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce',
-    redirectTo: `${window.location.origin}/dashboard`,
+    detectSessionInUrl: false,
   },
 });
 

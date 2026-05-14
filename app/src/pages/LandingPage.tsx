@@ -178,19 +178,6 @@ const LockIcon = () => (
   </svg>
 );
 
-const UserIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
-  </svg>
-);
-
-const NodeIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="5" cy="6" r="3" /><circle cx="19" cy="6" r="3" /><circle cx="12" cy="18" r="3" />
-    <line x1="5" y1="9" x2="12" y2="15" /><line x1="19" y1="9" x2="12" y2="15" />
-  </svg>
-);
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
@@ -203,13 +190,11 @@ export default function LandingPage() {
     if (session) navigate('/dashboard', { replace: true });
   }, [session, navigate]);
 
-  const [tab] = useState<'login'>('login');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Login state
   const [loginEmail, setLoginEmail]       = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-
-  const [isLoading, setIsLoading] = useState(false);
   const [focused,   setFocused]   = useState<string | null>(null);
   const [openNav,   setOpenNav]   = useState<keyof typeof NAV_CONTENT | null>(null);
 
