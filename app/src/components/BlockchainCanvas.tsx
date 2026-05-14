@@ -30,7 +30,7 @@ class Node {
   }
 
   update() {
-    this.pulsePhase += 0.05;
+    this.pulsePhase += 0.1;
     this.radius = this.baseRadius + Math.sin(this.pulsePhase) * 1.5;
   }
 
