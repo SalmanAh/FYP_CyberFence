@@ -65,7 +65,6 @@ interface Connection {
 
 export default function BlockchainCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const bgCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
