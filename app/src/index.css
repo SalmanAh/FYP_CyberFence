@@ -144,7 +144,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #f0f6ff;
+  background: #000000;
   display: flex;
   flex-direction: column;
 }
@@ -154,8 +154,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0, 144, 255, 0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 144, 255, 0.06) 0%, transparent 100%);
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0, 40, 80, 0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 10, 30, 0.8) 0%, transparent 100%);
   z-index: 0;
 }
 
@@ -174,7 +174,7 @@
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(240,246,255,0.7) 100%);
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.75) 100%);
 }
 
 /* Hex grid */
@@ -199,9 +199,9 @@
   justify-content: space-between;
   padding: 0 48px;
   height: 64px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
   flex-shrink: 0;
 }
 
@@ -210,7 +210,7 @@
   font-weight: 900;
   font-size: 15px;
   letter-spacing: 0.12em;
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
 /* Scale TrueFocus down when used inside the logo */
@@ -223,7 +223,7 @@
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 0.12em;
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
 .lp-logo .corner {
@@ -256,7 +256,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #888888;
+  color: #7a7a7a;
   background: none;
   border: none;
   cursor: pointer;
@@ -266,7 +266,7 @@
 
 .lp-nav-link:hover,
 .lp-nav-link--active {
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
 /* Nav popover */
@@ -275,12 +275,12 @@
   top: calc(100% + 16px);
   right: 0;
   width: 320px;
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(8, 8, 8, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   padding: 20px;
   backdrop-filter: blur(20px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 144, 255, 0.08);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 144, 255, 0.08);
   z-index: 100;
   animation: lp-popover-in 0.15s ease;
 }
@@ -294,17 +294,17 @@
   font-family: 'Geist Sans', 'Inter', sans-serif;
   font-weight: 800;
   font-size: 13px;
-  color: #1a1a1a;
+  color: #ffffff;
   letter-spacing: 0.04em;
   margin-bottom: 12px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .lp-popover-body {
   font-size: 12px;
   line-height: 1.75;
-  color: #666666;
+  color: #9a9a9a;
   margin: 0 0 14px 0;
 }
 
@@ -343,7 +343,7 @@
 
 .lp-popover-status-label {
   font-size: 11px;
-  color: #999999;
+  color: #6a6a6a;
   font-family: 'Geist Mono', monospace;
 }
 
@@ -356,7 +356,7 @@
   font-weight: 700;
 }
 
-.lp-popover-status-ok  { color: #00aa55; }
+.lp-popover-status-ok  { color: #00ff88; }
 .lp-popover-status-warn { color: #ffaa44; }
 
 .lp-popover-status-dot {
@@ -425,7 +425,7 @@
   font-size: clamp(56px, 7vw, 88px);
   line-height: 0.9;
   letter-spacing: -0.02em;
-  color: #0d1a2e;
+  color: #e0f0ff;
   margin: 0;
 }
 
@@ -438,7 +438,7 @@
 .lp-subtitle {
   font-size: 14px;
   line-height: 1.7;
-  color: #555555;
+  color: #9a9a9a;
   margin: 0;
   max-width: 380px;
 }
@@ -455,20 +455,20 @@
   align-items: center;
   gap: 7px;
   padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(8, 8, 8, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 2px;
   font-size: 11px;
   font-weight: 600;
-  color: #555555;
+  color: #9a9a9a;
   letter-spacing: 0.04em;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
 
 .lp-feature-pill:hover {
-  border-color: rgba(0, 144, 255, 0.4);
-  background: rgba(0, 144, 255, 0.08);
-  color: #0d1a2e;
+  border-color: rgba(0, 144, 255, 0.5);
+  background: rgba(0, 144, 255, 0.15);
+  color: #e0f0ff;
 }
 
 .lp-feature-pill-icon {
@@ -494,7 +494,7 @@
   font-family: 'Geist Mono', monospace;
   font-size: 22px;
   font-weight: 900;
-  color: #0d1a2e;
+  color: #e0f0ff;
   letter-spacing: -0.02em;
 }
 
@@ -509,7 +509,7 @@
 .lp-stat-divider {
   width: 1px;
   height: 32px;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* ── Right column — card ── */
@@ -519,8 +519,8 @@
 }
 
 .lp-card {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(8, 8, 8, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   padding: 32px;
   display: flex;
@@ -528,9 +528,9 @@
   gap: 20px;
   backdrop-filter: blur(20px);
   box-shadow:
-    0 0 0 1px rgba(0, 144, 255, 0.1),
-    0 24px 64px rgba(0, 0, 0, 0.08),
-    0 0 80px rgba(0, 144, 255, 0.06);
+    0 0 0 1px rgba(0, 144, 255, 0.2),
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(0, 144, 255, 0.12);
 }
 
 .lp-card-header {
@@ -555,21 +555,21 @@
   font-family: 'Geist Sans', 'Inter', sans-serif;
   font-weight: 800;
   font-size: 15px;
-  color: #1a1a1a;
+  color: #ffffff;
   margin: 0;
   letter-spacing: 0.02em;
 }
 
 .lp-card-desc {
   font-size: 11px;
-  color: #999999;
+  color: #7a7a7a;
   margin: 0;
   margin-top: 2px;
 }
 
 .lp-card-divider {
   height: 1px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.08);
   margin: 0 -32px;
 }
 
@@ -585,28 +585,28 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #999999;
+  color: #7a7a7a;
 }
 
 .lp-input-wrap {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #f8f8f8;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 2px;
   padding: 0 14px;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .lp-input-wrap--focused {
-  border-color: rgba(0, 144, 255, 0.5);
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(0, 144, 255, 0.08), inset 0 0 20px rgba(0, 144, 255, 0.03);
+  border-color: rgba(0, 144, 255, 0.6);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 3px rgba(0, 144, 255, 0.15), inset 0 0 20px rgba(0, 144, 255, 0.08);
 }
 
 .lp-input-prefix {
-  color: #999999;
+  color: #7a7a7a;
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -624,13 +624,13 @@
   outline: none;
   font-family: 'Geist Mono', monospace;
   font-size: 13px;
-  color: #1a1a1a;
+  color: #e0f0ff;
   padding: 12px 0;
   letter-spacing: 0.04em;
 }
 
 .lp-input::placeholder {
-  color: #cccccc;
+  color: #4a4a4a;
 }
 
 /* Submit button */
@@ -710,7 +710,7 @@
   gap: 7px;
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
-  color: #999999;
+  color: #7a7a7a;
   letter-spacing: 0.08em;
   margin: 0;
 }
@@ -730,8 +730,8 @@
   flex-shrink: 0;
   height: 36px;
   overflow: hidden;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 8, 8, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -750,12 +750,12 @@
 
 .lp-ticker-wrap::before {
   left: 0;
-  background: linear-gradient(to right, rgba(240,246,255,0.95), transparent);
+  background: linear-gradient(to right, rgba(8,8,8,0.95), transparent);
 }
 
 .lp-ticker-wrap::after {
   right: 0;
-  background: linear-gradient(to left, rgba(240,246,255,0.95), transparent);
+  background: linear-gradient(to left, rgba(8,8,8,0.95), transparent);
 }
 
 .lp-ticker-inner {
@@ -780,7 +780,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #888888;
+  color: #7a7a7a;
 }
 
 .lp-ticker-dot {

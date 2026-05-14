@@ -65,6 +65,7 @@ interface Connection {
 
 export default function BlockchainCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const bgCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -119,9 +120,9 @@ export default function BlockchainCanvas() {
       ctx.clearRect(0, 0, width, height);
 
       // Draw connections
-      ctx.lineWidth = 0.5;
+      ctx.lineWidth = 0.8;
       for (const conn of connections) {
-        ctx.strokeStyle = 'rgba(0, 144, 255, 0.1)';
+        ctx.strokeStyle = 'rgba(0, 144, 255, 0.35)';
         ctx.beginPath();
         ctx.moveTo(conn.from.x, conn.from.y);
         ctx.lineTo(conn.to.x, conn.to.y);
@@ -158,16 +159,35 @@ export default function BlockchainCanvas() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 0,
-      }}
-    />
+    <>
+      {/* Background map layer */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          opacity: 0.15,
+          backgroundImage: `url('/Map.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      {/* Network canvas layer */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1,
+        }}
+      />
+    </>
   );
 }
